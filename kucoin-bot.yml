@@ -1,0 +1,11 @@
+api:
+  key: xxxxxxxxxxxxxxxxxxx
+  pass: xxxxxxxxxxxxxxxxxx
+  secret: xxxxxxxxxxxxxxxx
+coins:
+  btc:
+    funds: 150
+    percent: 5
+  ltc:
+    funds: 100
+    percent: 10
