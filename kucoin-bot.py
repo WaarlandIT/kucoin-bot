@@ -131,7 +131,7 @@ while True:
             my_doc['coins'][my_coin]['orderid'] = 0
             my_doc['coins'][my_coin]['ordersize'] = 0
 
-            my_log.write(format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + percent + '%\n')
+            my_log.write(format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent) + '%\n')
             with open(my_config, 'w') as sfile:
                yaml.dump(my_doc, sfile)
 
