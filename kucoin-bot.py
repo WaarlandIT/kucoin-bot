@@ -168,3 +168,4 @@ while True:
                yaml.dump(my_doc, sfile)
 
       my_log.close()
+
