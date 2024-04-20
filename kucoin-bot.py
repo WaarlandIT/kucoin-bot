@@ -11,7 +11,7 @@ from kucoin.client import Trade
 from time import sleep
 
 my_config = 'kucoin-bot.yml'
-my_logfile = 'kucoin-bot.log'
+my_logfile = '/var/log/kucoin-bot.log'
 
 my_log = open(my_logfile, "a")
 sleep(2)
