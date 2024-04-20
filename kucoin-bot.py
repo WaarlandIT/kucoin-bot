@@ -68,7 +68,7 @@ def sell_coins():
     my_doc['coins'][my_coin]['orderid'] = 0
     my_doc['coins'][my_coin]['ordersize'] = 0
     my_log.write(format(datetime.datetime.now()) + ' Sale complete\n')
-    my_telegram_message = datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent)
+    my_telegram_message = format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent)
   except Exception as e:
     my_log.write('------------------')
     my_log.write(format(datetime.datetime.now()) + ' Error selling ' + my_ucoin + ' data: {e}')
@@ -114,7 +114,7 @@ def initialize_coins():
 
   my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
   send_telegram()
-  
+
   my_log.close()
 
 # End function initialize_coins
