@@ -55,7 +55,7 @@ def buy_coins():
   # Save price only after buy for calculating profits
   with open(my_config, 'w') as sfile:
     yaml.dump(my_doc, sfile)
-  send_telegram()
+  send_telegram(my_telegram_message)
 
 # End function buy_coins
 
@@ -78,7 +78,7 @@ def sell_coins():
 
   with open(my_config, 'w') as sfile:
       yaml.dump(my_doc, sfile)
-  send_telegram()
+  send_telegram(my_telegram_message)
 
 # End function sell_coins
 
@@ -113,13 +113,13 @@ def initialize_coins():
         pass
 
   my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
-  send_telegram()
+  send_telegram(my_telegram_message)
 
   my_log.close()
 
 # End function initialize_coins
 
-def send_telegram():
+def send_telegram(my_telegram_message):
   if str(my_doc['telegram']['token']) != 'no':
     my_token = my_doc['telegram']['token']
     url = f"https://api.telegram.org/bot{my_token}/getUpdates"
