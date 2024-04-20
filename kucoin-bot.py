@@ -35,9 +35,11 @@ def buy_coins(my_ucoin):
     my_log.write(format(datetime.datetime.now()) + ' Buy coins now \n')
     my_coin_funds = my_doc['coins'][my_coin]['funds']
     order_id = client.create_market_order(my_ucoin + '-USDT', 'buy', funds=my_coin_funds).get("orderId")
-    sleep(5)
+    my_log.write(format(datetime.datetime.now()) + ' wait until order is complete \n')
+    sleep(5) 
     my_doc['coins'][my_coin]['orderid'] = order_id
     order_list = client.get_fill_list(orderId=order_id,tradeType='TRADE')
+    my_log.write(format(datetime.datetime.now()) + ' wait until for order list \n')
     sleep(5)
     order_size = order_list['items'][0]['size']
     my_doc['coins'][my_coin]['ordersize'] = order_size
@@ -65,8 +67,8 @@ def sell_coins(my_ucoin):
     order = client.create_market_order(my_ucoin + '-USDT', 'sell', size=my_ordersize)
     my_doc['coins'][my_coin]['orderid'] = 0
     my_doc['coins'][my_coin]['ordersize'] = 0
+    my_log.write(format(datetime.datetime.now()) + ' wait until order is complete \n')
     sleep(5)
-    my_log.write(format(datetime.datetime.now()) + ' Sale complete\n')
     my_telegram_message = format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent)
   except Exception as e:
     my_log.write('------------------')
@@ -101,7 +103,7 @@ for my_coin in my_array:
   my_orderid = 0
   try:
     my_orderid = my_doc['coins'][my_coin]['orderid']
-    my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
+    my_log.write(format(datetime.datetime.now()) + ' Order ID ' + my_orderid + '\n')
   except Exception as e:
     my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
     my_doc['coins'][my_coin]['orderid'] = 0
