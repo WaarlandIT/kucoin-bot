@@ -62,6 +62,7 @@ def sell_coins():
     order = client.create_market_order(my_ucoin + '-USDT', 'sell', size=my_ordersize)
     my_doc['coins'][my_coin]['orderid'] = 0
     my_doc['coins'][my_coin]['ordersize'] = 0
+    sleep(5)
     my_log.write(format(datetime.datetime.now()) + ' Sale complete\n')
     my_telegram_message = format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent)
   except Exception as e:
