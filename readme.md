@@ -15,3 +15,6 @@ When the coin is sold the bot will see if the price drops again with the given p
 ### Usage of this script is at your own risk, you could lose you investment!
 If the price drops the bot holds on to the coin, if you do not want to HODL you need to sell manually. 
 
+## How to setup
+Clone this repo in /opt/ and configure your wanted coins and setup you API key info in the kucoin-bot.yml file.
+
