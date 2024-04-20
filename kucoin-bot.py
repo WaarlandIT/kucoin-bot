@@ -13,10 +13,6 @@ from time import sleep
 my_config = '/opt/kucoin-bot/kucoin-bot.yml'
 my_logfile = '/var/log/kucoin-bot.log'
 
-my_log = open(my_logfile, "a")
-sleep(2)
-my_log.write('########### \n' + format(datetime.datetime.now()) + ' Start bot \n')
-
 with open(my_config, 'r') as file:
     my_doc = yaml.safe_load(file)
 
@@ -32,7 +28,6 @@ m_client = Market(url='https://api.kucoin.com')
 client = Trade(my_api_key, my_api_secret, my_api_passphrase, is_sandbox=False)
 
 def buy_coins():
-   
   try:
     coin_old = m_client.get_ticker(my_ucoin + '-USDT')
     my_log.write(format(datetime.datetime.now()) + ' Buy coins now \n')
@@ -55,12 +50,11 @@ def buy_coins():
   # Save price only after buy for calculating profits
   with open(my_config, 'w') as sfile:
     yaml.dump(my_doc, sfile)
-  send_telegram(my_telegram_message)
 
+  send_telegram(my_telegram_message)
 # End function buy_coins
 
 def sell_coins():
-
   try:
     coin_old = m_client.get_ticker(my_ucoin + '-USDT')
     my_log.write(format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent) + '%\n')
@@ -79,11 +73,12 @@ def sell_coins():
   with open(my_config, 'w') as sfile:
       yaml.dump(my_doc, sfile)
   send_telegram(my_telegram_message)
-
 # End function sell_coins
 
 def initialize_coins():
-   
+  my_log = open(my_logfile, "a")
+  sleep(2)
+  my_log.write('########### \n' + format(datetime.datetime.now()) + ' Start bot \n')
   for my_coin in my_array:
     my_ucoin = my_coin.upper()
     my_coin_funds = my_doc['coins'][my_coin]['funds']
@@ -116,7 +111,6 @@ def initialize_coins():
   send_telegram(my_telegram_message)
 
   my_log.close()
-
 # End function initialize_coins
 
 def send_telegram(my_telegram_message):
@@ -161,7 +155,6 @@ while True:
       percent = round((((float(coin_new['bestAsk']) - float(my_price)) * 100) / float(my_price)),2)
 
       my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
-
       my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
       my_doc['coins'][my_coin]['value']['percent'] = percent
 
@@ -178,4 +171,3 @@ while True:
             sell_coins()
 
       my_log.close()
-
