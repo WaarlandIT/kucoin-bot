@@ -25,6 +25,7 @@ my_api_secret = my_doc['api']['secret']
 
 my_array = my_doc['coins']
 m_client = Market(url='https://api.kucoin.com')
+
 client = Trade(my_api_key, my_api_secret, my_api_passphrase, is_sandbox=False)
 my_log = open(my_logfile, "a")
 
@@ -33,9 +34,10 @@ def buy_coins():
     coin_old = m_client.get_ticker(my_ucoin + '-USDT')
     my_log.write(format(datetime.datetime.now()) + ' Buy coins now \n')
     order_id = client.create_market_order(my_ucoin + '-USDT', 'buy', funds=my_coin_funds).get("orderId")
-    sleep(5)
+    sleep(2)
     my_doc['coins'][my_coin]['orderid'] = order_id
     order_list = client.get_fill_list(orderId=order_id,tradeType='TRADE')
+    sleep(2)
     order_size = order_list['items'][0]['size']
     my_doc['coins'][my_coin]['ordersize'] = order_size
     my_order = 1
@@ -103,7 +105,7 @@ def initialize_coins():
 
     except Exception as e:
         my_log.write('------------------')
-        my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + 'data {e} \n')
+        my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + ' data {e} \n')
         my_log.write('------------------')
         pass
 
