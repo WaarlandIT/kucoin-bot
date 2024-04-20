@@ -26,6 +26,7 @@ my_api_secret = my_doc['api']['secret']
 my_array = my_doc['coins']
 m_client = Market(url='https://api.kucoin.com')
 client = Trade(my_api_key, my_api_secret, my_api_passphrase, is_sandbox=False)
+my_log = open(my_logfile, "a")
 
 def buy_coins():
   try:
@@ -76,8 +77,6 @@ def sell_coins():
 # End function sell_coins
 
 def initialize_coins():
-  my_log = open(my_logfile, "a")
-  sleep(2)
   my_log.write('########### \n' + format(datetime.datetime.now()) + ' Start bot \n')
   for my_coin in my_array:
     my_ucoin = my_coin.upper()
