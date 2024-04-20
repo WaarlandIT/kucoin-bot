@@ -93,7 +93,8 @@ def initialize_coins():
       my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
     except Exception as e:
       my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
-
+      pass
+    
     try:
         coin_old = m_client.get_ticker(my_ucoin + '-USDT')
         my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
@@ -102,14 +103,15 @@ def initialize_coins():
         if my_orderid == 0:
           my_log.write(format(datetime.datetime.now()) + ' Order now \n')
           buy_coins()
+        my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
 
     except Exception as e:
         my_log.write('------------------')
         my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + ' data {e} \n')
         my_log.write('------------------')
-        pass
+        my_telegram_message = format(datetime.datetime.now()) + ' Error initializing bot'
+#        pass
 
-  my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
   send_telegram(my_telegram_message)
 
   my_log.close()
