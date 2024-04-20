@@ -35,10 +35,10 @@ def buy_coins(my_ucoin):
     my_log.write(format(datetime.datetime.now()) + ' Buy coins now \n')
     my_coin_funds = my_doc['coins'][my_coin]['funds']
     order_id = client.create_market_order(my_ucoin + '-USDT', 'buy', funds=my_coin_funds).get("orderId")
-    sleep(2)
+    sleep(5)
     my_doc['coins'][my_coin]['orderid'] = order_id
     order_list = client.get_fill_list(orderId=order_id,tradeType='TRADE')
-    sleep(2)
+    sleep(5)
     order_size = order_list['items'][0]['size']
     my_doc['coins'][my_coin]['ordersize'] = order_size
     my_order = 1
