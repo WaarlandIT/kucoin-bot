@@ -93,8 +93,10 @@ def initialize_coins():
       my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
     except Exception as e:
       my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
+      my_doc['coins'][my_coin]['orderid'] = 0
+      my_orderid = 0
       pass
-    
+
     try:
         coin_old = m_client.get_ticker(my_ucoin + '-USDT')
         my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
