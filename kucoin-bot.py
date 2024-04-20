@@ -79,46 +79,6 @@ def sell_coins():
   send_telegram(my_telegram_message)
 # End function sell_coins
 
-def initialize_coins():
-  my_log.write('########### \n' + format(datetime.datetime.now()) + ' Start bot \n')
-  for my_coin in my_array:
-    my_ucoin = my_coin.upper()
-    my_coin_funds = my_doc['coins'][my_coin]['funds']
-    my_coin_percent = my_doc['coins'][my_coin]['percent']
-    my_log.write(format(datetime.datetime.now()) + ' ' + my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim: ' + str(my_coin_percent) + '%\n')
-
-    my_orderid = 0
-    try:
-      my_orderid = my_doc['coins'][my_coin]['orderid']
-      my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
-    except Exception as e:
-      my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
-      my_doc['coins'][my_coin]['orderid'] = 0
-      my_orderid = 0
-      pass
-
-    try:
-        coin_old = m_client.get_ticker(my_ucoin + '-USDT')
-        my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
-        my_doc['coins'][my_coin]['value'] = coin_old
-
-        if my_orderid == 0:
-          my_log.write(format(datetime.datetime.now()) + ' Order now \n')
-          buy_coins()
-        my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
-
-    except Exception as e:
-        my_log.write('------------------')
-        my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + ' data {e} \n')
-        my_log.write('------------------')
-        my_telegram_message = format(datetime.datetime.now()) + ' Error initializing bot'
-#        pass
-
-  send_telegram(my_telegram_message)
-
-  my_log.close()
-# End function initialize_coins
-
 def send_telegram(my_telegram_message):
   if str(my_doc['telegram']['token']) != 'no':
     my_token = my_doc['telegram']['token']
@@ -130,7 +90,42 @@ def send_telegram(my_telegram_message):
     
 # End function send_telegram
 
-initialize_coins()
+my_log.write('########### \n' + format(datetime.datetime.now()) + ' Start bot \n')
+for my_coin in my_array:
+  my_ucoin = my_coin.upper()
+  my_coin_funds = my_doc['coins'][my_coin]['funds']
+  my_coin_percent = my_doc['coins'][my_coin]['percent']
+  my_log.write(format(datetime.datetime.now()) + ' ' + my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim: ' + str(my_coin_percent) + '%\n')
+
+  my_orderid = 0
+  try:
+    my_orderid = my_doc['coins'][my_coin]['orderid']
+    my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
+  except Exception as e:
+    my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
+    my_doc['coins'][my_coin]['orderid'] = 0
+    my_orderid = 0
+    pass
+
+  try:
+      coin_old = m_client.get_ticker(my_ucoin + '-USDT')
+      my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
+      my_doc['coins'][my_coin]['value'] = coin_old
+
+      if my_orderid == 0:
+        my_log.write(format(datetime.datetime.now()) + ' Order now \n')
+        buy_coins()
+      my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
+
+  except Exception as e:
+      my_log.write('------------------')
+      my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + ' data {e} \n')
+      my_log.write('------------------')
+      my_telegram_message = format(datetime.datetime.now()) + ' Error initializing bot'
+
+send_telegram(my_telegram_message)
+
+my_log.close()
 
 # Loop through Coins and scan profit
 while True:
