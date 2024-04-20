@@ -125,7 +125,7 @@ def send_telegram():
     url = f"https://api.telegram.org/bot{my_token}/getUpdates"
     my_result = requests.get(url).json()
     my_chatid = my_result['result'][0]['message']['chat']['id']
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={chat_id}&text={my_telegram_message}"
+    url = f"https://api.telegram.org/bot{my_token}/sendMessage?chat_id={my_chatid}&text={my_telegram_message}"
     my_log.write(requests.get(url).json())
     
 # End function send_telegram
