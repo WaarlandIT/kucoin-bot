@@ -45,7 +45,6 @@ def buy_coins():
     my_order = 1
     my_log.write(format(datetime.datetime.now()) + ' Bought ' + order_size + ' amount of ' + my_ucoin + '\n')
   except Exception as e:
-    print(f'Error placing order: {e}')
     my_log.write('------------------')
     my_log.write(format(datetime.datetime.now()) + ' Error placing order for ' + my_ucoin + '\n')
     my_log.write('------------------')
@@ -68,7 +67,6 @@ def sell_coins():
     my_log.write(format(datetime.datetime.now()) + ' Sale complete\n')
 
   except Exception as e:
-    print(f'Error selling ' + my_ucoin + ' data: {e}')
     my_log.write('------------------')
     my_log.write(format(datetime.datetime.now()) + ' Error selling ' + my_ucoin + ' data: {e}')
     my_log.write('------------------')
@@ -85,32 +83,25 @@ def initialize_coins():
     my_ucoin = my_coin.upper()
     my_coin_funds = my_doc['coins'][my_coin]['funds']
     my_coin_percent = my_doc['coins'][my_coin]['percent']
-    print(my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim:' + str(my_coin_percent) + '%')
     my_log.write(format(datetime.datetime.now()) + ' ' + my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim: ' + str(my_coin_percent) + '%\n')
 
     my_orderid = 0
     try:
       my_orderid = my_doc['coins'][my_coin]['orderid']
-      print(my_orderid)
       my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
     except Exception as e:
-      print('No order ID found')
       my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
 
     try:
         coin_old = m_client.get_ticker(my_ucoin + '-USDT')
-        print('The price of ' + my_ucoin + ' at {} is:'.format(pd.Timestamp.now()), coin_old['price'])
         my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
         my_doc['coins'][my_coin]['value'] = coin_old
 
         if my_orderid == 0:
-          print('Order now')
           my_log.write(format(datetime.datetime.now()) + ' Order now \n')
-
           buy_coins()
 
     except Exception as e:
-        print(f'Error obtaining ' + my_coin + ' data: {e}')
         my_log.write('------------------')
         my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + 'data {e} \n')
         my_log.write('------------------')
@@ -138,11 +129,9 @@ while True:
 
       try:
         coin_new = m_client.get_ticker(my_ucoin + '-USDT')
-        print('The price of ' + my_ucoin + ' at {} is:'.format(pd.Timestamp.now()), coin_new['price'])
         my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' is:' +coin_new['price'] + '\n')
 
       except Exception as e:
-        print(f'Error obtaining ' + my_ucoin + ' data: {e}')
         my_log.write('------------------')
         my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + ' data: {e}')
         my_log.write('------------------')
@@ -151,7 +140,6 @@ while True:
       # Percentage calc
       percent = round((((float(coin_new['bestAsk']) - float(my_price)) * 100) / float(my_price)),2)
 
-      print('A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']))
       my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
 
       my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
