@@ -13,7 +13,6 @@ from time import sleep
 my_config = 'kucoin-bot.yml'
 my_logfile = 'kucoin-bot.log'
 
-
 my_log = open(my_logfile, "a")
 sleep(2)
 my_log.write('########### \n' + format(datetime.datetime.now()) + ' Start bot \n')
@@ -29,71 +28,104 @@ my_api_passphrase = my_doc['api']['pass']
 my_api_secret = my_doc['api']['secret']
 
 my_array = my_doc['coins']
-
 m_client = Market(url='https://api.kucoin.com')
 client = Trade(my_api_key, my_api_secret, my_api_passphrase, is_sandbox=False)
 
-for my_coin in my_array:
-   my_ucoin = my_coin.upper()
-   my_coin_funds = my_doc['coins'][my_coin]['funds']
-   my_coin_percent = my_doc['coins'][my_coin]['percent']
-   print(my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim:' + str(my_coin_percent) + '%')
-   my_log.write(format(datetime.datetime.now()) + ' ' + my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim: ' + str(my_coin_percent) + '%\n')
+def buy_coins():
+   
+  try:
+    coin_old = m_client.get_ticker(my_ucoin + '-USDT')
+    my_log.write(format(datetime.datetime.now()) + ' Buy coins now \n')
+    order_id = client.create_market_order(my_ucoin + '-USDT', 'buy', funds=my_coin_funds).get("orderId")
+    sleep(5)
+    my_doc['coins'][my_coin]['orderid'] = order_id
+    order_list = client.get_fill_list(orderId=order_id,tradeType='TRADE')
+    order_size = order_list['items'][0]['size']
+    my_doc['coins'][my_coin]['ordersize'] = order_size
+    my_order = 1
+    my_log.write(format(datetime.datetime.now()) + ' Bought ' + order_size + ' amount of ' + my_ucoin + '\n')
+  except Exception as e:
+    print(f'Error placing order: {e}')
+    my_log.write('------------------')
+    my_log.write(format(datetime.datetime.now()) + ' Error placing order for ' + my_ucoin + '\n')
+    my_log.write('------------------')
+    pass
 
-   my_orderid = 0
-   try:
-     my_orderid = my_doc['coins'][my_coin]['orderid']
-     print(my_orderid)
-     my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
-   except Exception as e:
-     print('No order ID found')
-     my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
+  # Save price only after buy for calculating profits
+  with open(my_config, 'w') as sfile:
+    yaml.dump(my_doc, sfile)
 
-   try:
-      coin_old = m_client.get_ticker(my_ucoin + '-USDT')
-      print('The price of ' + my_ucoin + ' at {} is:'.format(pd.Timestamp.now()), coin_old['price'])
-      my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
-      my_doc['coins'][my_coin]['value'] = coin_old
+# End function buy_coins
 
-      if my_orderid == 0:
-        print('Order now')
-        my_log.write(format(datetime.datetime.now()) + ' Order now \n')
+def sell_coins():
 
-        try:
-          # Get first buy
-          order_id = client.create_market_order(my_ucoin + '-USDT', 'buy', funds=my_coin_funds).get("orderId")
-          sleep(5)
-          my_doc['coins'][my_coin]['orderid'] = order_id
-          order_list = client.get_fill_list(orderId=order_id,tradeType='TRADE')
-          order_size = order_list['items'][0]['size']
-          my_doc['coins'][my_coin]['ordersize'] = order_size
-          my_order = 1
-          my_log.write(format(datetime.datetime.now()) + ' ' + my_ucoin + ' order size ' + order_size + '\n')
-        except Exception as e:
-          print(f'Error placing order: {e}')
-          my_log.write('------------------')
-          my_log.write(format(datetime.datetime.now()) + ' Error placing order for ' + my_ucoin + '\n')
-          my_log.write('------------------')
-          pass
+  try:
+    coin_old = m_client.get_ticker(my_ucoin + '-USDT')
+    my_log.write(format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent) + '%\n')
+    order = client.create_market_order(my_ucoin + '-USDT', 'sell', size=my_ordersize)
+    my_doc['coins'][my_coin]['orderid'] = 0
+    my_doc['coins'][my_coin]['ordersize'] = 0
+    my_log.write(format(datetime.datetime.now()) + ' Sale complete\n')
 
-        # Save price only after buy for calculating profits
-        with open(my_config, 'w') as sfile:
-          yaml.dump(my_doc, sfile)
+  except Exception as e:
+    print(f'Error selling ' + my_ucoin + ' data: {e}')
+    my_log.write('------------------')
+    my_log.write(format(datetime.datetime.now()) + ' Error selling ' + my_ucoin + ' data: {e}')
+    my_log.write('------------------')
+    pass
 
-   except Exception as e:
-      print(f'Error obtaining ' + my_coin + ' data: {e}')
-      my_log.write('------------------')
-      my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + 'data {e} \n')
-      my_log.write('------------------')
-      pass
+  with open(my_config, 'w') as sfile:
+      yaml.dump(my_doc, sfile)
+   
+# End function sell_coins
 
-my_log.close()
+def initialize_coins():
+   
+  for my_coin in my_array:
+    my_ucoin = my_coin.upper()
+    my_coin_funds = my_doc['coins'][my_coin]['funds']
+    my_coin_percent = my_doc['coins'][my_coin]['percent']
+    print(my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim:' + str(my_coin_percent) + '%')
+    my_log.write(format(datetime.datetime.now()) + ' ' + my_ucoin + ' Start funds: ' + str(my_coin_funds) + ' USDT - Percentage aim: ' + str(my_coin_percent) + '%\n')
+
+    my_orderid = 0
+    try:
+      my_orderid = my_doc['coins'][my_coin]['orderid']
+      print(my_orderid)
+      my_log.write(format(datetime.datetime.now()) + ' ' + my_orderid + '\n')
+    except Exception as e:
+      print('No order ID found')
+      my_log.write(format(datetime.datetime.now()) + ' No order ID found \n')
+
+    try:
+        coin_old = m_client.get_ticker(my_ucoin + '-USDT')
+        print('The price of ' + my_ucoin + ' at {} is:'.format(pd.Timestamp.now()), coin_old['price'])
+        my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
+        my_doc['coins'][my_coin]['value'] = coin_old
+
+        if my_orderid == 0:
+          print('Order now')
+          my_log.write(format(datetime.datetime.now()) + ' Order now \n')
+
+          buy_coins()
+
+    except Exception as e:
+        print(f'Error obtaining ' + my_coin + ' data: {e}')
+        my_log.write('------------------')
+        my_log.write(format(datetime.datetime.now()) + ' Error obtaining ' + my_ucoin + 'data {e} \n')
+        my_log.write('------------------')
+        pass
+
+  my_log.close()
+
+# End function initialize_coins
+initialize_coins()
+
 # Loop through Coins and scan profit
 while True:
    for my_coin in my_array:
 
-      my_timer = len(my_array)
-      sleep(300 / my_timer)
+      sleep(300 / len(my_array))
 
       my_log = open(my_logfile, "a")
 
@@ -124,52 +156,18 @@ while True:
 
       my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
       my_doc['coins'][my_coin]['value']['percent'] = percent
-      
+
       with open(my_config, 'w') as sfile:
           yaml.dump(my_doc, sfile)
 
       if my_orderid == 0:
          if percent < -abs(my_coin_percent):
             # Buy when price is percentage lower than original
-            try:
-              coin_old = m_client.get_ticker(my_ucoin + '-USDT')
-              my_log.write(format(datetime.datetime.now()) + ' Buy cheap, the price is ' + str(percent) + '% lower than our last sale\n')
-              order_id = client.create_market_order(my_ucoin + '-USDT', 'buy', funds=my_coin_funds).get("orderId")
-              sleep(5)
-              order_list = client.get_fill_list(orderId=order_id,tradeType='TRADE')
-              order_size = order_list['items'][0]['size']
-              my_doc['coins'][my_coin]['orderid'] = order_id
-              my_doc['coins'][my_coin]['ordersize'] = order_size
-              my_log.write(format(datetime.datetime.now()) + ' Bought ' + order_size + ' amount of ' + my_ucoin + '\n')
-            except Exception as e:
-              print(f'Error buying ' + my_ucoin + ' data: {e}')
-              my_log.write('------------------')
-              my_log.write(format(datetime.datetime.now()) + ' Error buying ' + my_ucoin + ' data: {e}')
-              my_log.write('------------------')
-              pass
-
-            with open(my_config, 'w') as sfile:
-               yaml.dump(my_doc, sfile)
+            buy_coins()
       else:
          if percent >= my_coin_percent:
             # Sell if price is percentage higher than original
-            try:
-              coin_old = m_client.get_ticker(my_ucoin + '-USDT')
-              my_log.write(format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent) + '%\n')
-              order = client.create_market_order(my_ucoin + '-USDT', 'sell', size=my_ordersize)
-              my_doc['coins'][my_coin]['orderid'] = 0
-              my_doc['coins'][my_coin]['ordersize'] = 0
-              my_log.write(format(datetime.datetime.now()) + ' Sale complete\n')
-
-            except Exception as e:
-              print(f'Error selling ' + my_ucoin + ' data: {e}')
-              my_log.write('------------------')
-              my_log.write(format(datetime.datetime.now()) + ' Error selling ' + my_ucoin + ' data: {e}')
-              my_log.write('------------------')
-              pass
-
-            with open(my_config, 'w') as sfile:
-               yaml.dump(my_doc, sfile)
+            sell_coins()
 
       my_log.close()
 
