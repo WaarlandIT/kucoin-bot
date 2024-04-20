@@ -123,6 +123,8 @@ while True:
       my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
 
       my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
+      my_doc['coins'][my_coin]['value']['percent'] = percent
+      
       with open(my_config, 'w') as sfile:
           yaml.dump(my_doc, sfile)
 
