@@ -36,20 +36,20 @@ ExecStart=/usr/bin/python3 /opt/kucoin-bot/kucoin-bot.py
 [Install]
 WantedBy=multi-user.target
 ```
- Then run :
- sudo systemctl daemon-reload
- sudo systemctl enable kucoin-bot.service
-
- And after you updated your kucoin-bot.yml file run:
- sudo systemctl start kucoin-bot.service
-
- If you would runb:
- sudo systemctl status kucoin-bot.service
-
- You should see no errors.
- You could also check /var/log/kucoin.log 
-
+ Then run :  
+ sudo systemctl daemon-reload  
+ sudo systemctl enable kucoin-bot.service  
+   
+ And after you updated your kucoin-bot.yml file run:  
+ sudo systemctl start kucoin-bot.service  
+  
+ If you would run:  
+ sudo systemctl status kucoin-bot.service  
+  
+ You should see no errors.  
+ You could also check /var/log/kucoin.log   
+  
 ## Disclamer
- This bot is just a hobby project!
- Using this is at your own risk as it is mine when I use this. 
- If you notice any issues please let me know. 
+ This bot is just a hobby project!  
+ Using this is at your own risk as it is mine when I use this.   
+ If you notice any issues please let me know.   
