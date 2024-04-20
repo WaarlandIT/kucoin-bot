@@ -87,7 +87,7 @@ def send_telegram(my_telegram_message):
     my_result = requests.get(url).json()
     my_chatid = my_result['result'][0]['message']['chat']['id']
     url = f"https://api.telegram.org/bot{my_token}/sendMessage?chat_id={my_chatid}&text={my_telegram_message}"
-    my_log.write(str(requests.get(url).json()))
+    my_log.write(str(requests.get(url).json()) + '\n')
     
 # End function send_telegram
 
