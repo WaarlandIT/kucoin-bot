@@ -29,10 +29,11 @@ m_client = Market(url='https://api.kucoin.com')
 client = Trade(my_api_key, my_api_secret, my_api_passphrase, is_sandbox=False)
 my_log = open(my_logfile, "a")
 
-def buy_coins():
+def buy_coins(my_ucoin):
   try:
     coin_old = m_client.get_ticker(my_ucoin + '-USDT')
     my_log.write(format(datetime.datetime.now()) + ' Buy coins now \n')
+    my_coin_funds = my_doc['coins'][my_coin]['funds']
     order_id = client.create_market_order(my_ucoin + '-USDT', 'buy', funds=my_coin_funds).get("orderId")
     sleep(2)
     my_doc['coins'][my_coin]['orderid'] = order_id
@@ -57,7 +58,7 @@ def buy_coins():
   send_telegram(my_telegram_message)
 # End function buy_coins
 
-def sell_coins():
+def sell_coins(my_ucoin):
   try:
     coin_old = m_client.get_ticker(my_ucoin + '-USDT')
     my_log.write(format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent) + '%\n')
@@ -114,7 +115,7 @@ for my_coin in my_array:
 
       if my_orderid == 0:
         my_log.write(format(datetime.datetime.now()) + ' Order now \n')
-        buy_coins()
+        buy_coins(my_ucoin)
       my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
 
   except Exception as e:
@@ -165,10 +166,10 @@ while True:
       if my_orderid == 0:
          if percent < -abs(my_coin_percent):
             # Buy when price is percentage lower than original
-            buy_coins()
+            buy_coins(my_ucoin)
       else:
          if percent >= my_coin_percent:
             # Sell if price is percentage higher than original
-            sell_coins()
+            sell_coins(my_ucoin)
 
       my_log.close()
