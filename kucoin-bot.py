@@ -44,15 +44,18 @@ def buy_coins():
     my_doc['coins'][my_coin]['ordersize'] = order_size
     my_order = 1
     my_log.write(format(datetime.datetime.now()) + ' Bought ' + order_size + ' amount of ' + my_ucoin + '\n')
+    my_telegram_message = format(datetime.datetime.now()) + ' Bought ' + order_size + ' amount of ' + my_ucoin
   except Exception as e:
     my_log.write('------------------')
     my_log.write(format(datetime.datetime.now()) + ' Error placing order for ' + my_ucoin + '\n')
     my_log.write('------------------')
+    my_telegram_message = format(datetime.datetime.now()) + ' Error placing order for ' + my_ucoin
     pass
 
   # Save price only after buy for calculating profits
   with open(my_config, 'w') as sfile:
     yaml.dump(my_doc, sfile)
+  send_telegram()
 
 # End function buy_coins
 
@@ -65,16 +68,18 @@ def sell_coins():
     my_doc['coins'][my_coin]['orderid'] = 0
     my_doc['coins'][my_coin]['ordersize'] = 0
     my_log.write(format(datetime.datetime.now()) + ' Sale complete\n')
-
+    my_telegram_message = datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent)
   except Exception as e:
     my_log.write('------------------')
     my_log.write(format(datetime.datetime.now()) + ' Error selling ' + my_ucoin + ' data: {e}')
     my_log.write('------------------')
+    my_telegram_message = format(datetime.datetime.now()) + ' Error selling ' + my_ucoin + ' data: {e}'
     pass
 
   with open(my_config, 'w') as sfile:
       yaml.dump(my_doc, sfile)
-   
+  send_telegram()
+
 # End function sell_coins
 
 def initialize_coins():
@@ -107,9 +112,24 @@ def initialize_coins():
         my_log.write('------------------')
         pass
 
+  my_telegram_message = format(datetime.datetime.now()) + ' Bot started'
+  send_telegram()
+  
   my_log.close()
 
 # End function initialize_coins
+
+def send_telegram():
+  if str(my_doc['telegram']['token']) != 'no':
+    my_token = my_doc['telegram']['token']
+    url = f"https://api.telegram.org/bot{my_token}/getUpdates"
+    my_result = requests.get(url).json()
+    my_chatid = my_result['result'][0]['message']['chat']['id']
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={chat_id}&text={my_telegram_message}"
+    my_log.write(requests.get(url).json())
+    
+# End function send_telegram
+
 initialize_coins()
 
 # Loop through Coins and scan profit
