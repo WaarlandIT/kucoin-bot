@@ -87,9 +87,7 @@ def send_telegram(my_telegram_message):
   if str(my_doc['telegram']['token']) != 'no':
     try:
       my_token = my_doc['telegram']['token']
-      url = f"https://api.telegram.org/bot{my_token}/getUpdates"
-      my_result = requests.get(url).json()
-      my_chatid = my_result['result'][0]['message']['chat']['id']
+      my_chatid = my_doc['telegram']['chatid']
       url = f"https://api.telegram.org/bot{my_token}/sendMessage?chat_id={my_chatid}&text={my_telegram_message}"
       my_log.write(str(requests.get(url).json()) + '\n')
     except Exception as e:
