@@ -85,12 +85,18 @@ def sell_coins(my_ucoin):
 
 def send_telegram(my_telegram_message):
   if str(my_doc['telegram']['token']) != 'no':
-    my_token = my_doc['telegram']['token']
-    url = f"https://api.telegram.org/bot{my_token}/getUpdates"
-    my_result = requests.get(url).json()
-    my_chatid = my_result['result'][0]['message']['chat']['id']
-    url = f"https://api.telegram.org/bot{my_token}/sendMessage?chat_id={my_chatid}&text={my_telegram_message}"
-    my_log.write(str(requests.get(url).json()) + '\n')
+    try:
+      my_token = my_doc['telegram']['token']
+      url = f"https://api.telegram.org/bot{my_token}/getUpdates"
+      my_result = requests.get(url).json()
+      my_chatid = my_result['result'][0]['message']['chat']['id']
+      url = f"https://api.telegram.org/bot{my_token}/sendMessage?chat_id={my_chatid}&text={my_telegram_message}"
+      my_log.write(str(requests.get(url).json()) + '\n')
+    except Exception as e:
+      my_log.write('------------------')
+      my_log.write(format(datetime.datetime.now()) + ' Error sending Telegram message')
+      my_log.write('------------------')
+      pass
     
 # End function send_telegram
 
