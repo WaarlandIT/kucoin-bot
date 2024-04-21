@@ -5,6 +5,7 @@ api:
 telegram:
   enabled: no
   token: xxxxxxxxxxxxxxxxx
+  chatid: xxxxxxxxxxx
 coins:
   btc:
     funds: 150
