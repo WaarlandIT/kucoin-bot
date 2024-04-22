@@ -161,23 +161,28 @@ while True:
         pass
 
       # Percentage calc
-      print('## coin-price ' + coin_new['price'] + ' my-price ' + my_price)
-      percent = round((((float(coin_new['price']) - float(my_price)) * 100) / float(my_price)),2)
+      try:
+        percent = round((((float(coin_new['price']) - float(my_price)) * 100) / float(my_price)),2)
 
-      my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
-      my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
-      my_doc['coins'][my_coin]['value']['percent'] = percent
+        my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
+        my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
+        my_doc['coins'][my_coin]['value']['percent'] = percent
 
-      with open(my_config, 'w') as sfile:
-          yaml.dump(my_doc, sfile)
+        with open(my_config, 'w') as sfile:
+            yaml.dump(my_doc, sfile)
 
-      if my_orderid == 0:
-         if percent < -abs(my_coin_percent):
-            # Buy when price is percentage lower than original
-            buy_coins(my_ucoin)
-      else:
-         if percent >= my_coin_percent:
-            # Sell if price is percentage higher than original
-            sell_coins(my_ucoin)
+        if my_orderid == 0:
+          if percent < -abs(my_coin_percent):
+              # Buy when price is percentage lower than original
+              buy_coins(my_ucoin)
+        else:
+          if percent >= my_coin_percent:
+              # Sell if price is percentage higher than original
+              sell_coins(my_ucoin)
+      except Exception as e:
+        my_log.write('------------------')
+        my_log.write(format(datetime.datetime.now()) + ' Error obtaining percentage for ' + my_ucoin + ' data: {e} skipping for now')
+        my_log.write('------------------')
+        pass
 
       my_log.close()
