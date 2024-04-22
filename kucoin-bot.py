@@ -161,6 +161,7 @@ while True:
         pass
 
       # Percentage calc
+      print('## coin-price ' + coin_new['price'] + ' my-price ' + my_price)
       percent = round((((float(coin_new['price']) - float(my_price)) * 100) / float(my_price)),2)
 
       my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
