@@ -152,7 +152,7 @@ while True:
 
       try:
         coin_new = m_client.get_ticker(my_ucoin + '-USDT')
-        my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' is:' +coin_new['price'] + '\n')
+        my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' is:' + coin_new['price'] + '\n')
 
       except Exception as e:
         my_log.write('------------------')
@@ -161,7 +161,7 @@ while True:
         pass
 
       # Percentage calc
-      percent = round((((float(coin_new['bestAsk']) - float(my_price)) * 100) / float(my_price)),2)
+      percent = round((((float(coin_new['price']) - float(my_price)) * 100) / float(my_price)),2)
 
       my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
       my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
