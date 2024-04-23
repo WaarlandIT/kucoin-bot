@@ -4,6 +4,7 @@ import pandas as pd
 import requests
 import json
 import datetime
+import time
 import yaml
 
 from kucoin.client import Market
@@ -167,14 +168,19 @@ while True:
         my_log.write(format(datetime.datetime.now()) + ' A ' + str(percent) + '% change between the Bought price: ' + str(my_price) + ' and the current price ' + str(coin_new['bestAsk']) + '\n')
         my_doc['stats']['percentage_today'] = ((my_doc['stats']['percentage_today'] + percent) / 2)
         my_doc['coins'][my_coin]['value']['percent'] = percent
+        my_last_time = my_doc['coins'][my_coin]['value']['time']
+        my_current_time = int(time.time() * 1000)
+        my_time_diff = int(my_current_time - my_last_time)
 
         with open(my_config, 'w') as sfile:
             yaml.dump(my_doc, sfile)
 
         if my_orderid == 0:
           if percent < -abs(my_coin_percent):
-              # Buy when price is percentage lower than original
-              buy_coins(my_ucoin)
+            # Buy when price is percentage lower than original
+            buy_coins(my_ucoin)
+          elif my_current_time - my_last_time > 3600000:
+            buy_coins(my_ucoin)
         else:
           if percent >= my_coin_percent:
               # Sell if price is percentage higher than original
