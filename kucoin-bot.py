@@ -43,7 +43,7 @@ def buy_coins(my_ucoin):
     sleep(5)
     order_size = order_list['items'][0]['size']
     my_doc['coins'][my_coin]['ordersize'] = order_size
-    my_order = 1
+    my_doc['coins'][my_coin]['value'] = coin_old
     my_log.write(format(datetime.datetime.now()) + ' Bought ' + order_size + ' amount of ' + my_ucoin + '\n')
     my_telegram_message = format(datetime.datetime.now()) + ' Bought ' + order_size + ' amount of ' + my_ucoin
   except Exception as e:
@@ -67,7 +67,7 @@ def sell_coins(my_ucoin):
     order = client.create_market_order(my_ucoin + '-USDT', 'sell', size=my_ordersize)
     my_doc['coins'][my_coin]['orderid'] = 0
     my_doc['coins'][my_coin]['ordersize'] = 0
-    my_doc['coins'][my_coin]['value']['price'] = coin_old
+    my_doc['coins'][my_coin]['value'] = coin_old
     my_log.write(format(datetime.datetime.now()) + ' wait until order is complete \n')
     sleep(5)
     my_telegram_message = format(datetime.datetime.now()) + ' Sell ' + my_ordersize + ' of ' + my_ucoin + ' with a profit of more than ' + str(percent)
