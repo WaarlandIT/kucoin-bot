@@ -1,0 +1,6 @@
+mysql:
+  user: dbuser
+  pass: dbpass
+  host: dbhost
+  database: dbname
+  
