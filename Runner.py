@@ -24,13 +24,16 @@ mycursor = mydb.cursor()
 
 my_sql = "INSERT INTO coins (coin, time, price) VALUES (%s, %s, %s)"
 
-my_coin = 'BTC'
-my_data = m_client.get_ticker(my_coin + '-USDT')
+my_array = my_doc['coins']
 
-my_current_time = int(time.time())
-my_price = my_data['price']
+for my_coin in my_array:
+  my_ucoin = my_coin.upper()
+  my_data = m_client.get_ticker(my_ucoin + '-USDT')
 
-my_val = (my_coin, my_current_time, my_price)
-mycursor.execute(my_sql, my_val)
+  my_current_time = int(time.time())
+  my_price = my_data['price']
+
+  my_val = (my_coin, my_current_time, my_price)
+  mycursor.execute(my_sql, my_val)
 
 mydb.commit()
