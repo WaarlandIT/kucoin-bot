@@ -16,10 +16,8 @@ my_coin = 'BTC'
 
 my_data = m_client.get_ticker(my_coin + '-USDT')
 
-mysqlhost = my_doc{'mysql'}['host']
-
 mydb = MySQLdb.connector.connect (
-  host = mysqlhost,
+  host = my_doc['mysql']['host'],
   user = my_doc['mysql']['user'],
   passwd = my_doc['mysql']['pass'],
   db = my_doc['mysql']['database']
