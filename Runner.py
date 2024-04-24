@@ -24,7 +24,7 @@ mydb = mysql.connector.connect (
   database = my_doc['mysql']['database']
 )
 
-#print(my_data)
+print(my_data)
 
 mycursor = mydb.cursor()
 
