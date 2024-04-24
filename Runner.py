@@ -2,7 +2,7 @@
 import sys
 import pandas as pd
 import yaml
-import mysql.connectorSQLdb
+import mysql.connector
 
 from kucoin.client import Market
 
