@@ -31,6 +31,8 @@ mycursor = mydb.cursor()
 my_current_time = int(time.time())
 my_price = my_data['price']
 
+print(my_price)
+
 my_sql = "INSERT INTO coins (coin, time, price) VALUES (%s, %s, %s)"
 my_val = (my_coin, my_current_time, my_price)
 mycursor.execute(my_sql, my_val)
