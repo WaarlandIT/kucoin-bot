@@ -179,8 +179,8 @@ while True:
           if percent < -abs(my_coin_percent):
             # Buy when price is percentage lower than original
             buy_coins(my_ucoin)
-          elif my_current_time - my_last_time > 3600000:
-            buy_coins(my_ucoin)
+#          elif my_current_time - my_last_time > 3600000:
+#            buy_coins(my_ucoin)
         else:
           if percent >= my_coin_percent:
               # Sell if price is percentage higher than original
