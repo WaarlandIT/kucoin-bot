@@ -28,7 +28,7 @@ mydb = mysql.connector.connect (
 
 mycursor = mydb.cursor()
 
-my_current_time = int(time.time() * 1000)
+my_current_time = int(time.time())
 my_price = my_data['price']
 
 my_sql = "INSERT INTO coins (coin, time, price) VALUES (%s, %s, %s)"
