@@ -2,7 +2,7 @@
 import sys
 import pandas as pd
 import yaml
-import MySQLdb
+import Mymysql.connectorSQLdb
 
 from kucoin.client import Market
 
@@ -16,11 +16,11 @@ my_coin = 'BTC'
 
 my_data = m_client.get_ticker(my_coin + '-USDT')
 
-mydb = MySQLdb.connector.connect (
+mydb = mysql.connector.connect (
   host = my_doc['mysql']['host'],
   user = my_doc['mysql']['user'],
-  passwd = my_doc['mysql']['pass'],
-  db = my_doc['mysql']['database']
+  password = my_doc['mysql']['pass'],
+  database = my_doc['mysql']['database']
 )
 
 print(my_data)
