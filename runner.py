@@ -31,7 +31,7 @@ while True:
   for my_coin in my_array:
     my_ucoin = my_coin.upper()
     my_data = m_client.get_ticker(my_ucoin + '-USDT')
-
+    sleep(5)
     my_current_time = int(time.time())
 
     my_price = my_data['price']
