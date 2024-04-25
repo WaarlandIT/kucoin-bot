@@ -31,11 +31,18 @@ while True:
   for my_coin in my_array:
     my_ucoin = my_coin.upper()
     my_data = m_client.get_ticker(my_ucoin + '-USDT')
-    sleep(5)
     my_current_time = int(time.time())
+    try:
+       my_old_price = my_doc['coins'][my_coin]['price']
+    except Exception as e:
+       my_old_price = 0
+       pass
+    
+    percent = round((((float(my_data['price']) - float(my_price)) * 100) / float(my_price)),2)
 
     my_price = my_data['price']
     my_doc['coins'][my_coin]['price'] = my_price
+    my_doc['coins'][my_coin]['lastpercent'] = percent
 
     with open(my_config, 'w') as sfile:
         yaml.dump(my_doc, sfile)
