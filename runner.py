@@ -33,7 +33,9 @@ while True:
     my_data = m_client.get_ticker(my_ucoin + '-USDT')
 
     my_current_time = int(time.time())
+
     my_price = my_data['price']
+    my_doc['coins'][my_coin]['price'] = my_price
 
     my_val = (my_coin, my_current_time, my_price)
     mycursor.execute(my_sql, my_val)
