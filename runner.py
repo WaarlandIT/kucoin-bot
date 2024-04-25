@@ -49,8 +49,8 @@ while True:
     mydb.commit()
     
     my_start_time = int(my_current_time) - 300
-    my_select = 'SELECT price FROM coins where coin = \'' + my_coin + '\' AND time > \'' + my_start_time + '\';'
     print(my_select)
+    my_select = 'SELECT price FROM coins where coin = \'' + my_coin + '\' AND time > \'' + my_start_time + '\';'
     mycursor.execute(my_select)
     my_result = mycursor.fetchall()
     for x in my_result:
