@@ -54,9 +54,11 @@ while True:
     mycursor.execute(my_select, (my_coin, my_start_time))
 
     my_result = mycursor.fetchall()
-    for x in my_result:
-      my_sql_array = x
     
-      print(my_sql_array[1])
+    print(my_ucoin)
+    for x in my_result:
+        my_sql_array = x
+        my_calc_price = my_sql_array[1]
+    
 
   sleep(60 / len(my_array))
