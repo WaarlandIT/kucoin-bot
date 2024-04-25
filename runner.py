@@ -43,9 +43,15 @@ while True:
 
     with open(my_config, 'w') as sfile:
         yaml.dump(my_doc, sfile)
-
     my_val = (my_coin, my_current_time, my_price)
+  
     mycursor.execute(my_sql, my_val)
+    mydb.commit()
 
-  mydb.commit()
+    my_select = 'SELECT price FROM coins where coin = \'' + my_coin + '\';'
+    mycursor.execute(my_select)
+    my_result = mycursor.fetchall()
+    for x in my_result:
+      print(x)
+
   sleep(60 / len(my_array))
