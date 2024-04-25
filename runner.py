@@ -52,7 +52,8 @@ while True:
     print(my_start_time)
     my_select = 'SELECT price FROM coins where coin = %s AND time > %i;'
 
-    mycursor.execute(my_select, my_coin, my_start_time)
+    mycursor.execute(my_select, (my_coin, my_start_time))
+    
     my_result = mycursor.fetchall()
     for x in my_result:
       print(x)
