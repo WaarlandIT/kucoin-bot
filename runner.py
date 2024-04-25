@@ -26,7 +26,7 @@ mycursor = mydb.cursor()
 my_sql = "INSERT INTO coins (coin, time, price) VALUES (%s, %s, %s)"
 
 my_array = my_doc['coins']
-my_price = 0
+my_price = 1
 
 while True:
   for my_coin in my_array:
@@ -36,7 +36,7 @@ while True:
     try:
        my_old_price = my_doc['coins'][my_coin]['price']
     except Exception as e:
-       my_old_price = 0
+       my_old_price = 1
        pass
     
     percent = round((((float(my_data['price']) - float(my_price)) * 100) / float(my_price)),2)
