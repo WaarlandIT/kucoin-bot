@@ -37,6 +37,9 @@ while True:
     my_price = my_data['price']
     my_doc['coins'][my_coin]['price'] = my_price
 
+    with open(my_config, 'w') as sfile:
+        yaml.dump(my_doc, sfile)
+
     my_val = (my_coin, my_current_time, my_price)
     mycursor.execute(my_sql, my_val)
 
