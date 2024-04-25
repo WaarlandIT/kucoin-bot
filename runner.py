@@ -50,7 +50,7 @@ while True:
     
     my_start_time = int(my_current_time) - 300
     print(my_start_time)
-    my_select = 'SELECT price FROM coins where coin = \'' + my_coin + '\' AND time > ' + my_start_time + ';'
+    my_select = 'SELECT price FROM coins where coin = ' + my_coin + ' AND time > ' + my_start_time + ';'
 
     mycursor.execute(my_select)
     my_result = mycursor.fetchall()
