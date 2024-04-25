@@ -26,8 +26,6 @@ mycursor = mydb.cursor()
 my_sql = "INSERT INTO coins (coin, time, price) VALUES (%s, %s, %s)"
 
 my_array = my_doc['coins']
-my_price = 1
-
 while True:
   for my_coin in my_array:
     my_ucoin = my_coin.upper()
@@ -39,7 +37,7 @@ while True:
        my_old_price = 1
        pass
     my_price = my_data['price']
-    percent = round((((float(my_data['price']) - float(my_price)) * 100) / float(my_price)),2)
+    percent = round((((float(my_data['price']) - float(my_old_price)) * 100) / float(my_old_price)),2)
     my_doc['coins'][my_coin]['price'] = my_price
     my_doc['coins'][my_coin]['lastpercent'] = percent
 
