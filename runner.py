@@ -36,7 +36,7 @@ while True:
 
     my_price = my_data['price']
     print(my_coin + ' ' + my_price)
-    my_doc['coins'][my_coin]['price'] = 1
+    my_doc['coins'][my_coin]['price'] = my_price
 
     with open(my_config, 'w') as sfile:
         yaml.dump(my_doc, sfile)
