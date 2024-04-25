@@ -48,7 +48,7 @@ while True:
     mycursor.execute(my_sql, my_val)
     mydb.commit()
     
-    my_start_time = int(my_current_time) - 300
+    my_start_time = int(my_current_time) - 900
     my_select = 'SELECT coin, price FROM coins where coin = %s AND time > %s order by time;'
 
     mycursor.execute(my_select, (my_coin, my_start_time))
