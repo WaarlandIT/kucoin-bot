@@ -38,10 +38,8 @@ while True:
     except Exception as e:
        my_old_price = 1
        pass
-    
-    percent = round((((float(my_data['price']) - float(my_price)) * 100) / float(my_price)),2)
-
     my_price = my_data['price']
+    percent = round((((float(my_data['price']) - float(my_price)) * 100) / float(my_price)),2)
     my_doc['coins'][my_coin]['price'] = my_price
     my_doc['coins'][my_coin]['lastpercent'] = percent
 
