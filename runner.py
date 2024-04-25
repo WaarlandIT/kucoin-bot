@@ -35,7 +35,6 @@ while True:
     my_current_time = int(time.time())
 
     my_price = my_data['price']
-    print(my_coin + ' ' + my_price)
     my_doc['coins'][my_coin]['price'] = my_price
 
     with open(my_config, 'w') as sfile:
