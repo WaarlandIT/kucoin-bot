@@ -26,6 +26,7 @@ mycursor = mydb.cursor()
 my_sql = "INSERT INTO coins (coin, time, price) VALUES (%s, %s, %s)"
 
 my_array = my_doc['coins']
+my_price = 0
 
 while True:
   for my_coin in my_array:
