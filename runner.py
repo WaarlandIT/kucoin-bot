@@ -49,6 +49,7 @@ while True:
     mydb.commit()
 
     my_select = 'SELECT price FROM coins where coin = \'' + my_coin + '\' AND time > \'' + my_current_time - 300 + '\';'
+    print(my_select)
     mycursor.execute(my_select)
     my_result = mycursor.fetchall()
     for x in my_result:
