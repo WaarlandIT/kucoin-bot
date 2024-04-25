@@ -49,12 +49,14 @@ while True:
     mydb.commit()
     
     my_start_time = int(my_current_time) - 300
-    my_select = 'SELECT time, price FROM coins where coin = %s AND time > %s order by time;'
+    my_select = 'SELECT coin, price FROM coins where coin = %s AND time > %s order by time;'
 
     mycursor.execute(my_select, (my_coin, my_start_time))
 
     my_result = mycursor.fetchall()
     for x in my_result:
-      print(x)
+      my_sql_array = x
+    
+      print(my_sql_array[1])
 
   sleep(60 / len(my_array))
