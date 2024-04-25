@@ -57,8 +57,8 @@ while True:
     
     print(my_ucoin)
     for x in my_result:
-        my_sql_array = x
-        my_calc_price = my_sql_array[1]
-    
+      my_sql_array = x
+      my_calc_price = my_sql_array[1]
+      print(my_calc_price)
 
   sleep(60 / len(my_array))
