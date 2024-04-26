@@ -119,8 +119,6 @@ for my_coin in my_array:
   try:
       coin_old = m_client.get_ticker(my_ucoin + '-USDT')
       my_log.write(format(datetime.datetime.now()) + ' The price of ' + my_ucoin + ' at ' + coin_old['price'] + '\n')
-      my_doc['coins'][my_coin]['value'] = coin_old
-
       if my_orderid == 0:
         my_log.write(format(datetime.datetime.now()) + ' Order now \n')
         buy_coins(my_ucoin)
